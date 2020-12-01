@@ -1,4 +1,5 @@
-import {UPDATE_ITEM_DATA, SUBMIT_ITEM_DATA, DELETE_ITEM_DATA} from './actionType'
+import {createReducer} from '@reduxjs/toolkit';
+import {updateInput, submitInput, deleteItem} from './actionCreators'
 
 const defaultState = {
   data: [
@@ -12,22 +13,16 @@ const defaultState = {
 };
 
 //两种动作，change_inputData; submit_data
-export default (state=defaultState, action) => {
-  if(action.type===UPDATE_ITEM_DATA){
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.input = action.value;
-    return newState;
-  }
-  if(action.type===SUBMIT_ITEM_DATA){
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.data.push(newState.input);
-    newState.input = '';
-    return newState;
-  }
-  if(action.type===DELETE_ITEM_DATA){
-    const newState = JSON.parse(JSON.stringify(state));
-    newState.data.splice(action.value, 1);
-    return newState
-  }
-  return state;
-}
+export const reducer = createReducer(defaultState, (action) => {
+  action
+    .addCase(updateInput, (state, action) => {
+      state.input = action.payload
+    })
+    .addCase(submitInput, (state, action) => {
+      state.data.push(state.input);
+      state.input = ''
+    })
+    .addCase(deleteItem, (state, action) => {
+      state.data.splice(action.payload, 1)
+    })
+})

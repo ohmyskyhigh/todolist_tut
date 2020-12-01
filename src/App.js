@@ -2,8 +2,8 @@ import react, {Component, Fragment} from 'react';
 import 'antd/dist/antd.css';
 import {Input, Button, List} from 'antd';
 import store from './store/';
-import {UPDATE_ITEM_DATA, SUBMIT_ITEM_DATA, DELETE_ITEM_DATA} from './store/actionType'
-import {updateItemAction} from './store/actionCreators'
+import {updateInput, submitInput, deleteItem} from './store/actionCreators';
+import AppUI from './UI';
 
 
 class App extends Component{
@@ -13,6 +13,7 @@ class App extends Component{
     this.state = store.getState()
     this.handleInput = this.handleInput.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.listItemClick = this.listItemClick.bind(this)
   }
 
   componentDidMount(){
@@ -24,55 +25,29 @@ class App extends Component{
   }
 
   render(){
-    const data = this.state.data
-    const input = this.state.input
-    console.log(input)
-    return(
-      <Fragment>
-        <div style={{'marginTop':'10px', 'marginLeft': '10px'}}>
-          <Input
-            placeholder="Todos"
-            size='large'
-            style={{'width': '300px'}}
-            value = {input}
-            onChange = {this.handleInput}
-            onPressEnter = {this.handleClick}
-          />
-          <Button type="primary" style={{'marginLeft':'5px'}} onClick={this.handleClick}>
-            提交
-          </Button>
-        </div>
-        <div>
-          <List
-            size="large"
-            style = {{'marginLeft': '10px', 'marginRight': '10px', 'marginTop': '10px', 'width':'300px'}}
-            bordered
-            dataSource={data}
-            renderItem={(item, idx) => <List.Item onClick={this.listItemClick.bind(this, idx)}>{item}</List.Item>}
-          />
-        </div>
-      </Fragment>
-    );
+    return (
+      <AppUI
+        input={this.state.input}
+        data={this.state.data}
+        handleInput={this.handleInput}
+        handleClick={this.handleClick}
+        listItemClick={this.listItemClick}
+      />)
   }
 
   handleInput = inputValue => {
-    const action = updateItemAction(inputValue.target.value);
+    const action = updateInput(inputValue.target.value);
     return store.dispatch(action)
   }
 
   handleClick = prevState => {
-    const action = {
-      type: SUBMIT_ITEM_DATA,
-      value: ''
-    }
+    const action = submitInput('')
     return store.dispatch(action)
   }
 
   listItemClick = idx=>{
-    const action = {
-      type: DELETE_ITEM_DATA,
-      value: idx
-    }
+    console.log(idx)
+    const action = deleteItem(idx)
     return store.dispatch(action)
   }
 }
