@@ -3,7 +3,7 @@ import App from './App'
 import 'antd/dist/antd.css';
 import {Input, Button, List} from 'antd';
 
-const UI = (props) => {
+export const AppUI = (props) => {
   const {data} = props
   const {input} = props
   return(
@@ -15,9 +15,9 @@ const UI = (props) => {
           style={{'width': '300px'}}
           value = {input}
           onChange = {props.handleInput}
-          onPressEnter = {props.handleClick}
+          onPressEnter = {()=>(props.handleSubmit(input))}
         />
-        <Button type="primary" style={{'marginLeft':'5px'}} onClick={props.handleClick}>
+        <Button type="primary" style={{'marginLeft':'5px'}} onClick={()=>(props.handleSubmit(input))}>
           提交
         </Button>
       </div>
@@ -33,5 +33,3 @@ const UI = (props) => {
     </Fragment>
   )
 }
-
-export default UI;

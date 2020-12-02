@@ -9,7 +9,7 @@ const defaultState = {
     'Man charged over missing wedding girl.',
     'Los Angeles battles huge wildfires.',
   ],
-  input: 'whad u say'
+  input: ''
 };
 
 //两种动作，change_inputData; submit_data
@@ -19,7 +19,7 @@ export const reducer = createReducer(defaultState, (action) => {
       state.input = action.payload
     })
     .addCase(submitInput, (state, action) => {
-      state.data.push(state.input);
+      state.data.push(action.payload);
       state.input = ''
     })
     .addCase(deleteItem, (state, action) => {

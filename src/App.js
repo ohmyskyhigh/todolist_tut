@@ -1,9 +1,8 @@
-import react, {Component, Fragment} from 'react';
-import 'antd/dist/antd.css';
-import {Input, Button, List} from 'antd';
+import react, {Component} from 'react';
 import store from './store/';
-import {updateInput, submitInput, deleteItem} from './store/actionCreators';
-import AppUI from './UI';
+import {updateInput, submitInput, deleteItem, getTodos} from './store/actionCreators';
+import {AppUI} from './UI';
+
 
 
 class App extends Component{
@@ -12,12 +11,14 @@ class App extends Component{
     super(props);
     this.state = store.getState()
     this.handleInput = this.handleInput.bind(this)
-    this.handleClick = this.handleClick.bind(this)
+    this.handleClick = this.handleSubmit.bind(this)
     this.listItemClick = this.listItemClick.bind(this)
   }
 
   componentDidMount(){
     store.subscribe(this.handlesubscription.bind(this));
+    const action = getTodos();
+    return store.dispatch(action);
   }
 
   handlesubscription = prevState=>{
@@ -30,7 +31,7 @@ class App extends Component{
         input={this.state.input}
         data={this.state.data}
         handleInput={this.handleInput}
-        handleClick={this.handleClick}
+        handleSubmit={this.handleSubmit}
         listItemClick={this.listItemClick}
       />)
   }
@@ -40,8 +41,8 @@ class App extends Component{
     return store.dispatch(action)
   }
 
-  handleClick = prevState => {
-    const action = submitInput('')
+  handleSubmit = input => {
+    const action = submitInput(input)
     return store.dispatch(action)
   }
 
