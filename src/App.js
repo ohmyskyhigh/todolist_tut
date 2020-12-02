@@ -1,6 +1,6 @@
 import react, {Component} from 'react';
 import store from './store/';
-import {updateInput, submitInput, deleteItem} from './store/actionCreators';
+import {getTodos, updateInput, submitInput, deleteItem} from './store/actionCreators';
 import {AppUI} from './UI';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -23,12 +23,10 @@ class App extends Component{
     let mock = new MockAdapter(axios);
     mock.onGet('/todos').reply(200,{
       data:'this is mockup'
-    })
-    axios.get('/todos')
-          .then(res=>{
-            return this.handleSubmit(res.data.data);
-          })
-          .catch(()=>{alert('error')});
+    });
+
+    const action = getTodos();
+    store.dispatch(action);
   }
 
   handlesubscription = prevState=>{
