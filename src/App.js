@@ -2,8 +2,14 @@ import react, {Component} from 'react';
 import store from './store/';
 import {updateInput, submitInput, deleteItem, getTodos} from './store/actionCreators';
 import {AppUI} from './UI';
+import {connect} from 'react-redux';
 
-
+const mapState2Props = (state)=>{
+  return {
+    input: state.input,
+    data: state.data,
+  }
+}
 
 class App extends Component{
 
@@ -28,8 +34,8 @@ class App extends Component{
   render(){
     return (
       <AppUI
-        input={this.state.input}
-        data={this.state.data}
+        input={this.props.input}
+        data={this.props.data}
         handleInput={this.handleInput}
         handleSubmit={this.handleSubmit}
         listItemClick={this.listItemClick}
@@ -53,5 +59,4 @@ class App extends Component{
   }
 }
 
-
-export default App;
+export default connect(mapState2Props,null)(App);
