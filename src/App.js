@@ -15,20 +15,11 @@ class App extends Component{
 
   constructor(props){
     super(props);
-    this.state = store.getState()
-    this.handleInput = this.handleInput.bind(this)
-    this.handleClick = this.handleSubmit.bind(this)
-    this.listItemClick = this.listItemClick.bind(this)
   }
 
   componentDidMount(){
-    store.subscribe(this.handlesubscription.bind(this));
     const action = getTodos();
     return store.dispatch(action);
-  }
-
-  handlesubscription = prevState=>{
-    this.setState(store.getState())
   }
 
   render(){
@@ -36,27 +27,28 @@ class App extends Component{
       <AppUI
         input={this.props.input}
         data={this.props.data}
-        handleInput={this.handleInput}
-        handleSubmit={this.handleSubmit}
-        listItemClick={this.listItemClick}
+        handleInput={this.props.handleInput}
+        handleSubmit={this.props.handleSubmit}
+        listItemClick={this.props.listItemClick}
       />)
-  }
-
-  handleInput = inputValue => {
-    const action = updateInput(inputValue.target.value);
-    return store.dispatch(action)
-  }
-
-  handleSubmit = input => {
-    const action = submitInput(input)
-    return store.dispatch(action)
-  }
-
-  listItemClick = idx=>{
-    console.log(idx)
-    const action = deleteItem(idx)
-    return store.dispatch(action)
   }
 }
 
-export default connect(mapState2Props,null)(App);
+const mapDispatch2Props = (dispatch) =>{
+  return {
+    handleInput: inputValue => {
+      const action = updateInput(inputValue.target.value);
+      dispatch(action)
+    },
+    handleSubmit: input => {
+      const action = submitInput(input)
+      dispatch(action)
+    },
+    listItemClick: idx => {
+      const action = deleteItem(idx)
+      dispatch(action)
+    }
+  }
+}
+
+export default connect(mapState2Props,mapDispatch2Props)(App);
